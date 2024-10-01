@@ -21,7 +21,7 @@ public class Swagger2Config {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiEndPointsInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("sn.esmt.tasks.taskmanager.controllers"))
+                .apis(RequestHandlerSelectors.basePackage("backend.rideme.auth.controllers"))
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build().apiInfo(apiEndPointsInfo());
