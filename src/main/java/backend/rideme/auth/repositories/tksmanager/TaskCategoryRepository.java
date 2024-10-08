@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface TaskCategoryRepository extends JpaRepository<TaskCategory, UUID> {
-    List<TaskCategory> findByDashboardId(UUID dashboardId);
+    List<TaskCategory> findByShiftId(UUID dashboardId);
 
     List<TaskCategory> findByDefaultTaskCategory(boolean value);
 }

@@ -51,7 +51,7 @@ public class Tasks extends BaseEntity {
 
     @ManyToOne
     @JsonIgnore
-    private Dashboard dashboard;
+    private Shift shift;
 
 
     @OneToMany
@@ -120,12 +120,12 @@ public class Tasks extends BaseEntity {
         this.taskCategory = taskCategory;
     }
 
-    public Dashboard getDashboard() {
-        return dashboard;
+    public Shift getShift() {
+        return shift;
     }
 
-    public void setDashboard(Dashboard dashboard) {
-        this.dashboard = dashboard;
+    public void setShift(Shift shift) {
+        this.shift = shift;
     }
 
     public List<Profile> getProfiles() {

@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>sn.esmt.tasks</groupId>
-    <artifactId>task-manager</artifactId>
+    <artifactId>ridemeauth</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>task-manager</name>
-    <description>task-manager</description>
+    <name>ridemeauth</name>
+    <description>ridemeauth</description>
     <properties>
         <java.version>11</java.version>
         <jjwt.version>0.9.1</jjwt.version>

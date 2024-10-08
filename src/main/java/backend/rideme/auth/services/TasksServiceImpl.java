@@ -3,13 +3,13 @@ package backend.rideme.auth.services;
 import backend.rideme.auth.dto.converters.ApiResponse;
 import backend.rideme.auth.entities.MediaFile;
 import backend.rideme.auth.entities.Profile;
-import backend.rideme.auth.entities.tksmanager.Dashboard;
+import backend.rideme.auth.entities.tksmanager.Shift;
 import backend.rideme.auth.entities.tksmanager.TaskCategory;
 import backend.rideme.auth.entities.tksmanager.TaskComment;
 import backend.rideme.auth.entities.tksmanager.Tasks;
 import backend.rideme.auth.repositories.MediaFileRepository;
 import backend.rideme.auth.repositories.ProfileRepository;
-import backend.rideme.auth.repositories.tksmanager.DashboardRepository;
+import backend.rideme.auth.repositories.tksmanager.ShiftRepository;
 import backend.rideme.auth.repositories.tksmanager.TaskCategoryRepository;
 import backend.rideme.auth.repositories.tksmanager.TaskCommentRepository;
 import backend.rideme.auth.repositories.tksmanager.TasksRepository;
@@ -28,7 +28,7 @@ import java.util.UUID;
 @Service
 public class TasksServiceImpl implements TasksService {
 
-    private final DashboardRepository dashboardRepository;
+    private final ShiftRepository shiftRepository;
     private final TaskCategoryRepository taskCategoryRepository;
     private final TasksRepository tasksRepository;
     private final ProfileRepository profileRepository;
@@ -40,8 +40,8 @@ public class TasksServiceImpl implements TasksService {
     private EntityManager entityManager;
 
 
-    public TasksServiceImpl(DashboardRepository dashboardRepository, TaskCategoryRepository taskCategoryRepository, TasksRepository tasksRepository, ProfileRepository profileRepository, MediaFileRepository mediaFileRepository, TaskCommentRepository taskCommentRepository, LoggerUser loggerUser) {
-        this.dashboardRepository = dashboardRepository;
+    public TasksServiceImpl(ShiftRepository shiftRepository, TaskCategoryRepository taskCategoryRepository, TasksRepository tasksRepository, ProfileRepository profileRepository, MediaFileRepository mediaFileRepository, TaskCommentRepository taskCommentRepository, LoggerUser loggerUser) {
+        this.shiftRepository = shiftRepository;
         this.taskCategoryRepository = taskCategoryRepository;
         this.tasksRepository = tasksRepository;
         this.profileRepository = profileRepository;
@@ -51,57 +51,57 @@ public class TasksServiceImpl implements TasksService {
     }
 
     @Override
-    public List<Dashboard> getAllDashboards() {
-        return dashboardRepository.findByProfileId(loggerUser.getCurrentProfile().getId());
+    public List<Shift> getAllShifts() {
+        return shiftRepository.findByProfileId(loggerUser.getCurrentProfile().getId());
     }
 
     @Transactional
     @Override
-    public Dashboard addDashboard(Dashboard dashboard) {
-        if (dashboardRepository.existsByBordName(dashboard.getBordName())) {
+    public Shift addShift(Shift shift) {
+        if (shiftRepository.existsByBordName(shift.getBordName())) {
             throw new RequestNotAcceptableException("The name is already use");
         }
-        dashboard.setProfile(loggerUser.getCurrentProfile());
-        dashboard = dashboardRepository.save(dashboard);
+        shift.setProfile(loggerUser.getCurrentProfile());
+        shift = shiftRepository.save(shift);
 
         List<TaskCategory> taskCategories = taskCategoryRepository.findByDefaultTaskCategory(true);
         for (TaskCategory taskCategory : taskCategories) {
             entityManager.detach(taskCategory);
             taskCategory.setId(null);
             taskCategory.setDefaultTaskCategory(false);
-            taskCategory.setDashboard(dashboard);
+            taskCategory.setShift(shift);
             taskCategoryRepository.save(taskCategory);
         }
-        return dashboard;
+        return shift;
     }
 
     @Override
-    public Dashboard getDashboard(UUID dashboardId) {
-        return dashboardRepository.findById(dashboardId).orElseThrow(() -> new ResourceNotFoundException("Dashboard", "id", dashboardId));
+    public Shift getShift(UUID dashboardId) {
+        return shiftRepository.findById(dashboardId).orElseThrow(() -> new ResourceNotFoundException("Shift", "id", dashboardId));
     }
 
     @Override
-    public Dashboard updateDashboard(UUID dashboardId, Dashboard dashboard) {
-        Dashboard dashboardDb = dashboardRepository.findById(dashboardId).orElseThrow(() -> new ResourceNotFoundException("Dashboard", "id", dashboardId));
-        dashboardDb.setBordName(dashboard.getBordName());
-        dashboardDb.setDescriptions(dashboard.getDescriptions());
-        return dashboardRepository.save(dashboardDb);
+    public Shift updateShift(UUID dashboardId, Shift shift) {
+        Shift shiftDb = shiftRepository.findById(dashboardId).orElseThrow(() -> new ResourceNotFoundException("Shift", "id", dashboardId));
+        shiftDb.setBordName(shift.getBordName());
+        shiftDb.setDescriptions(shift.getDescriptions());
+        return shiftRepository.save(shiftDb);
     }
 
     @Override
-    public ApiResponse deleteDashboard(UUID dashboardId) {
-        Dashboard dashboardDb = dashboardRepository.findById(dashboardId).orElseThrow(() -> new ResourceNotFoundException("Dashboard", "id", dashboardId));
-        List<TaskCategory> taskCategories = getTaskCategoryByDashboard(dashboardId);
+    public ApiResponse deleteShift(UUID dashboardId) {
+        Shift shiftDb = shiftRepository.findById(dashboardId).orElseThrow(() -> new ResourceNotFoundException("Shift", "id", dashboardId));
+        List<TaskCategory> taskCategories = getTaskCategoryByShift(dashboardId);
         for (TaskCategory taskCategory : taskCategories) {
             deleteTaskCategory(dashboardId, taskCategory.getId());
         }
-        dashboardRepository.delete(dashboardDb);
-        return new ApiResponse(true, "Dashboard deleted successfully");
+        shiftRepository.delete(shiftDb);
+        return new ApiResponse(true, "Shift deleted successfully");
     }
 
     @Override
-    public List<TaskCategory> getTaskCategoryByDashboard(UUID dashboardId) {
-        return taskCategoryRepository.findByDashboardId(dashboardId);
+    public List<TaskCategory> getTaskCategoryByShift(UUID dashboardId) {
+        return taskCategoryRepository.findByShiftId(dashboardId);
     }
 
     @Override
@@ -115,15 +115,15 @@ public class TasksServiceImpl implements TasksService {
 
     @Override
     public TaskCategory addTaskCategory(UUID dashboardId, TaskCategory taskCategory) {
-        Dashboard dashboardDb = dashboardRepository.findById(dashboardId).orElseThrow(() -> new ResourceNotFoundException("Dashboard", "id", dashboardId));
-        taskCategory.setDashboard(dashboardDb);
+        Shift shiftDb = shiftRepository.findById(dashboardId).orElseThrow(() -> new ResourceNotFoundException("Shift", "id", dashboardId));
+        taskCategory.setShift(shiftDb);
         return taskCategoryRepository.save(taskCategory);
     }
 
     @Override
     public TaskCategory updateTaskCategory(UUID dashboardId, UUID taskCategoryId, TaskCategory taskCategory) {
-        if (!dashboardRepository.existsById(dashboardId)) {
-            throw new ResourceNotFoundException("Dashboard", "id", dashboardId);
+        if (!shiftRepository.existsById(dashboardId)) {
+            throw new ResourceNotFoundException("Shift", "id", dashboardId);
         }
         TaskCategory taskCategoryDB = taskCategoryRepository.findById(taskCategoryId).orElseThrow(() -> new ResourceNotFoundException("TaskCategory", "id", taskCategoryId));
         taskCategoryDB.setName(taskCategory.getName());
@@ -151,7 +151,7 @@ public class TasksServiceImpl implements TasksService {
         TaskCategory taskCategoryDB = taskCategoryRepository.findById(taskCategoryId).orElseThrow(() -> new ResourceNotFoundException("TaskCategory", "id", taskCategoryId));
         tasks.setCreatedBy(loggerUser.getCurrentUser());
         tasks.setTaskCategory(taskCategoryDB);
-        tasks.setDashboard(taskCategoryDB.getDashboard());
+        tasks.setShift(taskCategoryDB.getShift());
         return tasksRepository.save(tasks);
     }
 

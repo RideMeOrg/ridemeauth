@@ -1,7 +1,7 @@
 package backend.rideme.auth.services;
 
 import backend.rideme.auth.dto.converters.ApiResponse;
-import backend.rideme.auth.entities.tksmanager.Dashboard;
+import backend.rideme.auth.entities.tksmanager.Shift;
 import backend.rideme.auth.entities.tksmanager.TaskCategory;
 import backend.rideme.auth.entities.tksmanager.TaskComment;
 import backend.rideme.auth.entities.tksmanager.Tasks;
@@ -10,16 +10,16 @@ import java.util.List;
 import java.util.UUID;
 
 public interface TasksService {
-    List<Dashboard> getAllDashboards();
+    List<Shift> getAllShifts();
 
-    Dashboard addDashboard(Dashboard dashboard);
-    Dashboard getDashboard(UUID dashboardId);
+    Shift addShift(Shift shift);
+    Shift getShift(UUID dashboardId);
 
-    Dashboard updateDashboard(UUID dashboardId, Dashboard dashboard);
+    Shift updateShift(UUID dashboardId, Shift shift);
 
-    ApiResponse deleteDashboard(UUID dashboardId);
+    ApiResponse deleteShift(UUID dashboardId);
 
-    List<TaskCategory> getTaskCategoryByDashboard(UUID dashboardId);
+    List<TaskCategory> getTaskCategoryByShift(UUID dashboardId);
 
     List<Tasks> getTasksByCategory(UUID taskCategoryId, String search);
 

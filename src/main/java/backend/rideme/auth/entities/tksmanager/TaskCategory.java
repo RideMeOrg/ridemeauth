@@ -36,7 +36,7 @@ public class TaskCategory extends BaseEntity {
     private boolean defaultTaskCategory;
 
     @ManyToOne
-    private Dashboard dashboard;
+    private Shift shift;
 
     public UUID getId() {
         return id;
@@ -70,11 +70,11 @@ public class TaskCategory extends BaseEntity {
         this.defaultTaskCategory = defaultTaskCategory;
     }
 
-    public Dashboard getDashboard() {
-        return dashboard;
+    public Shift getShift() {
+        return shift;
     }
 
-    public void setDashboard(Dashboard dashboard) {
-        this.dashboard = dashboard;
+    public void setShift(Shift shift) {
+        this.shift = shift;
     }
 }

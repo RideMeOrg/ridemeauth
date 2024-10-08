@@ -8,13 +8,13 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 @SpringBootApplication
 @EntityScan(basePackageClasses = {
-		TaskManagerApplication.class,
+		RidemeAuthApplication.class,
 		Jsr310JpaConverters.class
 })
-public class TaskManagerApplication {
+public class RidemeAuthApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TaskManagerApplication.class, args);
+		SpringApplication.run(RidemeAuthApplication.class, args);
 	}
 
 }

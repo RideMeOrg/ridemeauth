@@ -2,7 +2,7 @@ package backend.rideme.auth;
 
 import backend.rideme.auth.dto.converters.ApiResponse;
 import backend.rideme.auth.dto.converters.LoginRequest;
-import backend.rideme.auth.entities.tksmanager.Dashboard;
+import backend.rideme.auth.entities.tksmanager.Shift;
 import backend.rideme.auth.entities.tksmanager.TaskCategory;
 import backend.rideme.auth.entities.tksmanager.Tasks;
 import org.assertj.core.api.Assertions;
@@ -42,93 +42,93 @@ public class TestService {
     }
 
     @Test
-    public void getUserDashboard() {
-        List<Dashboard> dashboardList = this.tasksService.getAllDashboards();
-        Assertions.assertThat(dashboardList.size()).isGreaterThanOrEqualTo(0);
+    public void getUserShift() {
+        List<Shift> shiftList = this.tasksService.getAllShifts();
+        Assertions.assertThat(shiftList.size()).isGreaterThanOrEqualTo(0);
     }
 
     @Test
-    public void addDashboard() {
-        Dashboard dashboard = new Dashboard();
-        dashboard.setBordName("Spring boot application");
-        dashboard.setDescriptions("Some description");
-        Dashboard dashboardB = tasksService.addDashboard(dashboard);
+    public void addShift() {
+        Shift shift = new Shift();
+        shift.setBordName("Spring boot application");
+        shift.setDescriptions("Some description");
+        Shift shiftB = tasksService.addShift(shift);
 
-        Assertions.assertThat(dashboardB).isNotNull();
-        Assertions.assertThat(dashboardB.getId()).isNotNull();
-        Assertions.assertThat(dashboardB.getBordName()).isEqualTo(dashboard.getBordName());
-        Assertions.assertThat(dashboardB.getDescriptions()).isEqualTo(dashboard.getDescriptions());
+        Assertions.assertThat(shiftB).isNotNull();
+        Assertions.assertThat(shiftB.getId()).isNotNull();
+        Assertions.assertThat(shiftB.getBordName()).isEqualTo(shift.getBordName());
+        Assertions.assertThat(shiftB.getDescriptions()).isEqualTo(shift.getDescriptions());
 
-        List<TaskCategory> taskCategories = tasksService.getTaskCategoryByDashboard(dashboard.getId());
+        List<TaskCategory> taskCategories = tasksService.getTaskCategoryByShift(shift.getId());
         Assertions.assertThat(taskCategories.size()).isGreaterThan(0);
     }
 
     @Test
-    public void updateDashboard() {
-        Dashboard dashboardB = new Dashboard();
-        dashboardB.setBordName("Financial App");
-        dashboardB.setDescriptions("Some description");
-        dashboardB = tasksService.addDashboard(dashboardB);
+    public void updateShift() {
+        Shift shiftB = new Shift();
+        shiftB.setBordName("Financial App");
+        shiftB.setDescriptions("Some description");
+        shiftB = tasksService.addShift(shiftB);
 
-        Assertions.assertThat(dashboardB.getId()).isNotNull();
+        Assertions.assertThat(shiftB.getId()).isNotNull();
 
-        dashboardB.setBordName(dashboardB.getBordName() + "Update");
+        shiftB.setBordName(shiftB.getBordName() + "Update");
 
-        Dashboard dashboardDB = this.tasksService.updateDashboard(dashboardB.getId(), dashboardB);
-        Assertions.assertThat(dashboardDB.getBordName()).isEqualTo(dashboardB.getBordName());
+        Shift shiftDB = this.tasksService.updateShift(shiftB.getId(), shiftB);
+        Assertions.assertThat(shiftDB.getBordName()).isEqualTo(shiftB.getBordName());
     }
 
     @Test
-    public void deleteDashboard() {
-        Dashboard dashboard = new Dashboard();
-        dashboard.setBordName("Docker App");
-        dashboard.setDescriptions("Some description");
-        dashboard = tasksService.addDashboard(dashboard);
-        Assertions.assertThat(dashboard.getId()).isNotNull();
+    public void deleteShift() {
+        Shift shift = new Shift();
+        shift.setBordName("Docker App");
+        shift.setDescriptions("Some description");
+        shift = tasksService.addShift(shift);
+        Assertions.assertThat(shift.getId()).isNotNull();
 
-        ApiResponse apiResponse = this.tasksService.deleteDashboard(dashboard.getId());
+        ApiResponse apiResponse = this.tasksService.deleteShift(shift.getId());
         Assertions.assertThat(apiResponse).isNotNull();
         Assertions.assertThat(apiResponse.getSuccess()).isEqualTo(true);
     }
 
     @Test
-    public void getTaskCategoryByDashboard() {
-        Dashboard dashboard = new Dashboard();
-        dashboard.setBordName("Docker App 2");
-        dashboard.setDescriptions("Some description");
-        dashboard = tasksService.addDashboard(dashboard);
-        Assertions.assertThat(dashboard.getId()).isNotNull();
+    public void getTaskCategoryByShift() {
+        Shift shift = new Shift();
+        shift.setBordName("Docker App 2");
+        shift.setDescriptions("Some description");
+        shift = tasksService.addShift(shift);
+        Assertions.assertThat(shift.getId()).isNotNull();
 
         TaskCategory taskCategory = new TaskCategory();
-        taskCategory.setDashboard(dashboard);
+        taskCategory.setShift(shift);
         taskCategory.setName("TaskCategory");
         taskCategory.setIndexColor("#000000");
 
-        taskCategory = tasksService.addTaskCategory(dashboard.getId(), taskCategory);
+        taskCategory = tasksService.addTaskCategory(shift.getId(), taskCategory);
 
         Assertions.assertThat(taskCategory.getId()).isNotNull();
         Assertions.assertThat(taskCategory.isDefaultTaskCategory()).isEqualTo(false);
-        Assertions.assertThat(taskCategory.getDashboard().getId()).isEqualTo(dashboard.getId());
+        Assertions.assertThat(taskCategory.getShift().getId()).isEqualTo(shift.getId());
 
 
-        List<TaskCategory> taskCategories = tasksService.getTaskCategoryByDashboard(dashboard.getId());
+        List<TaskCategory> taskCategories = tasksService.getTaskCategoryByShift(shift.getId());
         Assertions.assertThat(taskCategories.size()).isGreaterThan(0);
     }
 
     @Test
     public void getTasksByCategory() {
-        Dashboard dashboard = new Dashboard();
-        dashboard.setBordName("Docker App 3");
-        dashboard.setDescriptions("Some description");
-        dashboard = tasksService.addDashboard(dashboard);
-        Assertions.assertThat(dashboard.getId()).isNotNull();
+        Shift shift = new Shift();
+        shift.setBordName("Docker App 3");
+        shift.setDescriptions("Some description");
+        shift = tasksService.addShift(shift);
+        Assertions.assertThat(shift.getId()).isNotNull();
 
         TaskCategory taskCategory = new TaskCategory();
-        taskCategory.setDashboard(dashboard);
+        taskCategory.setShift(shift);
         taskCategory.setName("TaskCategory");
         taskCategory.setIndexColor("#000000");
 
-        taskCategory = tasksService.addTaskCategory(dashboard.getId(), taskCategory);
+        taskCategory = tasksService.addTaskCategory(shift.getId(), taskCategory);
 
         Assertions.assertThat(taskCategory.getId()).isNotNull();
 
@@ -137,7 +137,7 @@ public class TestService {
         tasks.setTags(List.of("Design", "UI/UX"));
         tasks.setBadgeColor(List.of("#000000", "#ffffff"));
         tasks.setDeadline(new Date());
-        tasks.setDashboard(dashboard);
+        tasks.setShift(shift);
         tasks.setTaskCategory(taskCategory);
 
         tasks = tasksService.addTasks(taskCategory.getId(), tasks);
@@ -153,7 +153,7 @@ public class TestService {
         tasks2.setTags(List.of("Design", "UI/UX"));
         tasks2.setBadgeColor(List.of("#000000", "#ffffff"));
         tasks2.setDeadline(new Date());
-        tasks2.setDashboard(dashboard);
+        tasks2.setShift(shift);
         tasks2.setTaskCategory(taskCategory);
 
         tasks2 = tasksService.addTasks(taskCategory.getId(), tasks2);
@@ -172,40 +172,40 @@ public class TestService {
 
     @Test
     public void addTaskCategory() {
-        Dashboard dashboard = new Dashboard();
-        dashboard.setBordName("Add tasks category dash");
-        dashboard.setDescriptions("Some description");
-        dashboard = tasksService.addDashboard(dashboard);
-        Assertions.assertThat(dashboard.getId()).isNotNull();
+        Shift shift = new Shift();
+        shift.setBordName("Add tasks category dash");
+        shift.setDescriptions("Some description");
+        shift = tasksService.addShift(shift);
+        Assertions.assertThat(shift.getId()).isNotNull();
 
         TaskCategory taskCategory = new TaskCategory();
-        taskCategory.setDashboard(dashboard);
+        taskCategory.setShift(shift);
         taskCategory.setName("TaskCategory");
         taskCategory.setIndexColor("#000000");
 
-        taskCategory = tasksService.addTaskCategory(dashboard.getId(), taskCategory);
+        taskCategory = tasksService.addTaskCategory(shift.getId(), taskCategory);
         Assertions.assertThat(taskCategory.getId()).isNotNull();
         Assertions.assertThat(taskCategory.getName()).isEqualTo("TaskCategory");
     }
 
     @Test
     public void updateTaskCategory() {
-        Dashboard dashboard = new Dashboard();
-        dashboard.setBordName("Update tasks category dash");
-        dashboard.setDescriptions("Some description");
-        dashboard = tasksService.addDashboard(dashboard);
-        Assertions.assertThat(dashboard.getId()).isNotNull();
+        Shift shift = new Shift();
+        shift.setBordName("Update tasks category dash");
+        shift.setDescriptions("Some description");
+        shift = tasksService.addShift(shift);
+        Assertions.assertThat(shift.getId()).isNotNull();
 
         TaskCategory taskCategory = new TaskCategory();
-        taskCategory.setDashboard(dashboard);
+        taskCategory.setShift(shift);
         taskCategory.setName("TaskCategory");
         taskCategory.setIndexColor("#000000");
 
-        taskCategory = tasksService.addTaskCategory(dashboard.getId(), taskCategory);
+        taskCategory = tasksService.addTaskCategory(shift.getId(), taskCategory);
         Assertions.assertThat(taskCategory.getId()).isNotNull();
 
         taskCategory.setName("Update Task");
-        taskCategory = tasksService.updateTaskCategory(dashboard.getId(), taskCategory.getId(), taskCategory);
+        taskCategory = tasksService.updateTaskCategory(shift.getId(), taskCategory.getId(), taskCategory);
 
         Assertions.assertThat(taskCategory.getId()).isNotNull();
         Assertions.assertThat(taskCategory.getName()).isEqualTo("Update Task");
@@ -213,39 +213,39 @@ public class TestService {
 
     @Test
     public void deleteTaskCategory() {
-        Dashboard dashboard = new Dashboard();
-        dashboard.setBordName("Delete tasks dash");
-        dashboard.setDescriptions("Some description");
-        dashboard = tasksService.addDashboard(dashboard);
-        Assertions.assertThat(dashboard.getId()).isNotNull();
+        Shift shift = new Shift();
+        shift.setBordName("Delete tasks dash");
+        shift.setDescriptions("Some description");
+        shift = tasksService.addShift(shift);
+        Assertions.assertThat(shift.getId()).isNotNull();
 
         TaskCategory taskCategory = new TaskCategory();
-        taskCategory.setDashboard(dashboard);
+        taskCategory.setShift(shift);
         taskCategory.setName("TaskCategory");
         taskCategory.setIndexColor("#000000");
 
-        taskCategory = tasksService.addTaskCategory(dashboard.getId(), taskCategory);
+        taskCategory = tasksService.addTaskCategory(shift.getId(), taskCategory);
         Assertions.assertThat(taskCategory.getId()).isNotNull();
 
-        ApiResponse apiResponse = tasksService.deleteTaskCategory(dashboard.getId(), taskCategory.getId());
+        ApiResponse apiResponse = tasksService.deleteTaskCategory(shift.getId(), taskCategory.getId());
         Assertions.assertThat(apiResponse.getSuccess()).isEqualTo(true);
 
     }
 
     @Test
     public void addTasks() {
-        Dashboard dashboard = new Dashboard();
-        dashboard.setBordName("Add tasks dash");
-        dashboard.setDescriptions("Some description");
-        dashboard = tasksService.addDashboard(dashboard);
-        Assertions.assertThat(dashboard.getId()).isNotNull();
+        Shift shift = new Shift();
+        shift.setBordName("Add tasks dash");
+        shift.setDescriptions("Some description");
+        shift = tasksService.addShift(shift);
+        Assertions.assertThat(shift.getId()).isNotNull();
 
         TaskCategory taskCategory = new TaskCategory();
-        taskCategory.setDashboard(dashboard);
+        taskCategory.setShift(shift);
         taskCategory.setName("TaskCategory");
         taskCategory.setIndexColor("#000000");
 
-        taskCategory = tasksService.addTaskCategory(dashboard.getId(), taskCategory);
+        taskCategory = tasksService.addTaskCategory(shift.getId(), taskCategory);
 
         Assertions.assertThat(taskCategory.getId()).isNotNull();
 
@@ -254,7 +254,7 @@ public class TestService {
         tasks.setTags(List.of("Design", "UI/UX"));
         tasks.setBadgeColor(List.of("#000000", "#ffffff"));
         tasks.setDeadline(new Date());
-        tasks.setDashboard(dashboard);
+        tasks.setShift(shift);
         tasks.setTaskCategory(taskCategory);
 
         tasks = tasksService.addTasks(taskCategory.getId(), tasks);
@@ -265,18 +265,18 @@ public class TestService {
 
     @Test
     public void updateTasks() {
-        Dashboard dashboard = new Dashboard();
-        dashboard.setBordName("Update tasks dash");
-        dashboard.setDescriptions("Some description");
-        dashboard = tasksService.addDashboard(dashboard);
-        Assertions.assertThat(dashboard.getId()).isNotNull();
+        Shift shift = new Shift();
+        shift.setBordName("Update tasks dash");
+        shift.setDescriptions("Some description");
+        shift = tasksService.addShift(shift);
+        Assertions.assertThat(shift.getId()).isNotNull();
 
         TaskCategory taskCategory = new TaskCategory();
-        taskCategory.setDashboard(dashboard);
+        taskCategory.setShift(shift);
         taskCategory.setName("TaskCategory");
         taskCategory.setIndexColor("#000000");
 
-        taskCategory = tasksService.addTaskCategory(dashboard.getId(), taskCategory);
+        taskCategory = tasksService.addTaskCategory(shift.getId(), taskCategory);
 
         Assertions.assertThat(taskCategory.getId()).isNotNull();
 
@@ -285,7 +285,7 @@ public class TestService {
         tasks.setTags(List.of("Design", "UI/UX"));
         tasks.setBadgeColor(List.of("#000000", "#ffffff"));
         tasks.setDeadline(new Date());
-        tasks.setDashboard(dashboard);
+        tasks.setShift(shift);
         tasks.setTaskCategory(taskCategory);
 
         tasks = tasksService.addTasks(taskCategory.getId(), tasks);
@@ -300,11 +300,11 @@ public class TestService {
 
 
         TaskCategory taskCategory2 = new TaskCategory();
-        taskCategory2.setDashboard(dashboard);
+        taskCategory2.setShift(shift);
         taskCategory2.setName("TaskCategory2");
         taskCategory2.setIndexColor("#ffffff");
 
-        taskCategory2 = tasksService.addTaskCategory(dashboard.getId(), taskCategory2);
+        taskCategory2 = tasksService.addTaskCategory(shift.getId(), taskCategory2);
 
         Assertions.assertThat(taskCategory2.getId()).isNotNull();
 
@@ -317,18 +317,18 @@ public class TestService {
 
     @Test
     public void deleteTasks() {
-        Dashboard dashboard = new Dashboard();
-        dashboard.setBordName("delete tasks dash");
-        dashboard.setDescriptions("Some description");
-        dashboard = tasksService.addDashboard(dashboard);
-        Assertions.assertThat(dashboard.getId()).isNotNull();
+        Shift shift = new Shift();
+        shift.setBordName("delete tasks dash");
+        shift.setDescriptions("Some description");
+        shift = tasksService.addShift(shift);
+        Assertions.assertThat(shift.getId()).isNotNull();
 
         TaskCategory taskCategory = new TaskCategory();
-        taskCategory.setDashboard(dashboard);
+        taskCategory.setShift(shift);
         taskCategory.setName("TaskCategory");
         taskCategory.setIndexColor("#000000");
 
-        taskCategory = tasksService.addTaskCategory(dashboard.getId(), taskCategory);
+        taskCategory = tasksService.addTaskCategory(shift.getId(), taskCategory);
 
         Assertions.assertThat(taskCategory.getId()).isNotNull();
 
@@ -337,7 +337,7 @@ public class TestService {
         tasks.setTags(List.of("Design", "UI/UX"));
         tasks.setBadgeColor(List.of("#000000", "#ffffff"));
         tasks.setDeadline(new Date());
-        tasks.setDashboard(dashboard);
+        tasks.setShift(shift);
         tasks.setTaskCategory(taskCategory);
 
         tasks = tasksService.addTasks(taskCategory.getId(), tasks);

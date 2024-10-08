@@ -6,8 +6,8 @@ RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:17-alpine
 
-COPY --from-build/target/*.jar ridemeauth.jar
+COPY --from=build /target/*.jar ridemeauth.jar
 
 EXPOSE 8090
 
-ENTRYPOINT ["java","-jar","demo.jar"]
+ENTRYPOINT ["java","-jar","ridemeauth.jar"]
