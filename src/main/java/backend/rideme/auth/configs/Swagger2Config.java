@@ -30,7 +30,7 @@ public class Swagger2Config {
     private ApiInfo apiEndPointsInfo() {
         return new ApiInfoBuilder().title("Spring Server REST API")
                 .description("RIDEME REST API")
-                .contact(new Contact("ESMT", "https://esmt.sn/", "lazare.kounasso.etu@esmt.sn"))
+                .contact(new Contact("KEKOTTECH", "https://kekottech.com/", "contact@kekottech.com"))
                 .license("Apache 2.0")
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
                 .version("1.0.0")
